@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7EC8E3"/>
+      <stop offset="0.55" stop-color="#BDE3F0"/>
+      <stop offset="1" stop-color="#EAF6F4"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7CBF5A"/>
+      <stop offset="0.35" stop-color="#5FA53F"/>
+      <stop offset="1" stop-color="#3F7D2E"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFF8D6"/>
+      <stop offset="0.7" stop-color="#FFEFB5"/>
+      <stop offset="1" stop-color="#FFE79A"/>
+    </radialGradient>
+    <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFEFB5" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#FFEFB5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 天空 -->
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#sky)"/>
+
+  <!-- 太阳 -->
+  <circle cx="1560" cy="170" r="150" fill="url(#sunGlow)"/>
+  <circle cx="1560" cy="170" r="62" fill="url(#sun)"/>
+
+  <!-- 云朵 -->
+  <g fill="#FFFFFF" opacity="0.92">
+    <g transform="translate(260,140) scale(1)">
+      <ellipse cx="0" cy="0" rx="90" ry="34"/>
+      <ellipse cx="62" cy="-14" rx="66" ry="30"/>
+      <ellipse cx="-58" cy="-10" rx="56" ry="26"/>
+      <ellipse cx="18" cy="18" rx="120" ry="30"/>
+    </g>
+    <g transform="translate(760,90) scale(0.72)">
+      <ellipse cx="0" cy="0" rx="90" ry="34"/>
+      <ellipse cx="62" cy="-14" rx="66" ry="30"/>
+      <ellipse cx="-58" cy="-10" rx="56" ry="26"/>
+      <ellipse cx="18" cy="18" rx="120" ry="30"/>
+    </g>
+    <g transform="translate(1180,240) scale(0.55)">
+      <ellipse cx="0" cy="0" rx="90" ry="34"/>
+      <ellipse cx="62" cy="-14" rx="66" ry="30"/>
+      <ellipse cx="-58" cy="-10" rx="56" ry="26"/>
+      <ellipse cx="18" cy="18" rx="120" ry="30"/>
+    </g>
+    <g transform="translate(1720,320) scale(0.62)">
+      <ellipse cx="0" cy="0" rx="90" ry="34"/>
+      <ellipse cx="62" cy="-14" rx="66" ry="30"/>
+      <ellipse cx="-58" cy="-10" rx="56" ry="26"/>
+      <ellipse cx="18" cy="18" rx="120" ry="30"/>
+    </g>
+  </g>
+
+  <!-- 远山 -->
+  <g fill="#8FB8A6" opacity="0.7">
+    <path d="M0 640 L320 420 L640 640 L980 470 L1320 640 L1600 450 L1920 640 L1920 760 L0 760 Z"/>
+  </g>
+  <g fill="#A5C9B2" opacity="0.8">
+    <path d="M0 700 L420 520 L860 700 L1240 540 L1920 700 L1920 800 L0 800 Z"/>
+  </g>
+
+  <!-- 草地 -->
+  <path d="M0 640 Q480 560 960 640 Q1440 720 1920 620 L1920 1080 L0 1080 Z" fill="url(#grass)"/>
+
+  <!-- 草丘起伏 -->
+  <ellipse cx="420" cy="760" rx="420" ry="120" fill="#6BB447" opacity="0.55"/>
+  <ellipse cx="1350" cy="800" rx="520" ry="150" fill="#6BB447" opacity="0.4"/>
+  <ellipse cx="180" cy="860" rx="360" ry="110" fill="#66AE44" opacity="0.5"/>
+
+  <!-- 小草簇（散布） -->
+  <g stroke="#4E8A33" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.75">
+    <path d="M180 820 q-8 -26 -4 -44"/>
+    <path d="M188 818 q6 -24 14 -40"/>
+    <path d="M196 820 q-4 -20 -2 -36"/>
+    <path d="M520 700 q-8 -26 -4 -44"/>
+    <path d="M528 698 q6 -24 14 -40"/>
+    <path d="M536 700 q-4 -20 -2 -36"/>
+    <path d="M840 660 q-8 -26 -4 -44"/>
+    <path d="M848 658 q6 -24 14 -40"/>
+    <path d="M856 660 q-4 -20 -2 -36"/>
+    <path d="M1120 700 q-8 -26 -4 -44"/>
+    <path d="M1128 698 q6 -24 14 -40"/>
+    <path d="M1136 700 q-4 -20 -2 -36"/>
+    <path d="M1460 740 q-8 -26 -4 -44"/>
+    <path d="M1468 738 q6 -24 14 -40"/>
+    <path d="M1476 740 q-4 -20 -2 -36"/>
+    <path d="M1720 820 q-8 -26 -4 -44"/>
+    <path d="M1728 818 q6 -24 14 -40"/>
+    <path d="M1736 820 q-4 -20 -2 -36"/>
+    <path d="M300 940 q-8 -26 -4 -44"/>
+    <path d="M308 938 q6 -24 14 -40"/>
+    <path d="M316 940 q-4 -20 -2 -36"/>
+    <path d="M760 920 q-8 -26 -4 -44"/>
+    <path d="M768 918 q6 -24 14 -40"/>
+    <path d="M776 920 q-4 -20 -2 -36"/>
+    <path d="M1000 960 q-8 -26 -4 -44"/>
+    <path d="M1008 958 q6 -24 14 -40"/>
+    <path d="M1016 960 q-4 -20 -2 -36"/>
+    <path d="M1280 880 q-8 -26 -4 -44"/>
+    <path d="M1288 878 q6 -24 14 -40"/>
+    <path d="M1296 880 q-4 -20 -2 -36"/>
+    <path d="M1640 900 q-8 -26 -4 -44"/>
+    <path d="M1648 898 q6 -24 14 -40"/>
+    <path d="M1656 900 q-4 -20 -2 -36"/>
+    <path d="M60 700 q-8 -26 -4 -44"/>
+    <path d="M68 698 q6 -24 14 -40"/>
+    <path d="M76 700 q-4 -20 -2 -36"/>
+  </g>
+
+  <!-- 木栅栏（牧场点缀） -->
+  <g stroke="#9A6B3F" stroke-width="7" stroke-linecap="round">
+    <path d="M0 900 L1920 900"/>
+    <path d="M0 958 L1920 958"/>
+    <path d="M120 820 L120 1000"/>
+    <path d="M400 800 L400 1000"/>
+    <path d="M680 790 L680 1000"/>
+    <path d="M960 800 L960 1000"/>
+    <path d="M1240 810 L1240 1000"/>
+    <path d="M1520 820 L1520 1000"/>
+    <path d="M1800 830 L1800 1000"/>
+  </g>
+  <g stroke="#7C4F28" stroke-width="4" stroke-linecap="round" opacity="0.5">
+    <path d="M0 918 L1920 918"/>
+    <path d="M0 976 L1920 976"/>
+  </g>
+
+  <!-- 前端草地深色暗角（衬托登录框） -->
+  <rect x="0" y="900" width="1920" height="180" fill="#2F5C20" opacity="0.35"/>
+</svg>

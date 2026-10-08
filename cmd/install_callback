@@ -1,0 +1,71 @@
+#!/bin/bash
+# 安装后：把 proxy/ 模板同步到 var/proxy，生成自签证书与模板配置。
+# 容器启停由 fnOS docker-project 托管，无需在此起容器 / 生成 compose。
+set -e
+
+SRC="$TRIM_APPDEST/proxy"
+DEST="$TRIM_PKGVAR/proxy"
+LOGFILE="${TRIM_TEMP_LOGFILE:-/dev/null}"
+
+err() { echo "$1" > "$LOGFILE"; exit 1; }
+
+# ---------- wizard_port 校验 ----------
+# 向导 wizard/install 收集的端口（initValue=11766，故默认非空）。
+# docker-compose 的 ports 用 ${wizard_port} 直接生效，无需写文件；
+# 这里只做 fail-fast 校验，让用户填错时安装立即失败而非容器起不来。
+PORT="${wizard_port:-11766}"
+case "$PORT" in
+  ''|*[!0-9]*) err "端口必须为纯数字，当前值：$PORT" ;;
+esac
+if [ "$PORT" -lt 1024 ] || [ "$PORT" -gt 65535 ]; then
+  err "端口范围 1024-65535，当前值：$PORT"
+fi
+
+# ---------- 同步模板到 var/proxy ----------
+mkdir -p "$DEST"
+# 注意：不要 rm -rf conf（容器目录级 bind mount 指向目录 inode，删除重建会让已挂载目录变空）。
+# 保留目录 inode、逐文件覆盖即可；容器内容由 fnOS 挂载该目录，重启后即读取最新文件。
+mkdir -p "$DEST/conf"
+cp -rf "$SRC/conf/." "$DEST/conf/" || err "同步配置模板失败"
+mkdir -p "$DEST/bg"
+cp -f "$SRC/bg/index.html" "$SRC/bg/quote.txt" "$SRC/bg/solid_bg.webp" "$SRC/bg/cow.js" "$SRC/bg/cow_bg.svg" "$DEST/bg/" || err "同步页面模板失败"
+# 默认背景仅在缺失时拷贝（升级/重装不覆盖用户已上传的图）
+[ -s "$DEST/bg/custom_bg.webp" ] || cp -f "$SRC/bg/custom_bg.webp" "$DEST/bg/"
+
+# ---------- HTTPS 证书：应用自签证书 ----------
+# 官方开发文档未提供应用获取系统证书的 API（见 docs/developer.fnnas.com/api-overview.md）。
+# 依据官方推荐，窗口页走统一网关（系统域名 HTTPS，无证书提示）；
+# 反代端口（wizard_port，默认 11766）使用应用自签证书（CN=muyan），不触碰任何系统文件。
+mkdir -p "$DEST/certs"
+gen_cert() {
+  openssl req -x509 -newkey rsa:2048 -nodes \
+    -keyout "$DEST/certs/key.pem" -out "$DEST/certs/cert.pem" \
+    -days 3650 -subj "/CN=muyan" -addext "subjectAltName=DNS:muyan" \
+    >/dev/null 2>&1
+}
+if ! gen_cert; then
+  err "自签证书生成失败：请确认系统 openssl 命令可用"
+fi
+chmod 644 "$DEST/certs/cert.pem" "$DEST/certs/key.pem" 2>/dev/null || true
+
+# ---------- 美化模板配置（portal.json，仅存 template 字段） ----------
+mkdir -p "$DEST/config"
+if [ ! -s "$DEST/config/portal.json" ]; then
+  printf '{"template":"classic"}\n' > "$DEST/config/portal.json"
+  chmod 666 "$DEST/config/portal.json"
+fi
+
+# ---------- bg 目录容器内可写（上传接口 PUT 覆盖背景图需要） ----------
+chmod -R a+rwX "$DEST/bg" 2>/dev/null || true
+
+# ---------- 权限修正：容器内 nginx worker 非 root ----------
+# fnOS 解包/复制的 conf、config 为 700（muyan:muyan），容器内 nginx worker（nobody/nginx）
+# 读不到 content_by_lua_file 的 Lua 文件与 portal.json → 窗口页 API 全部 503。
+# bg 目录上面已放开；这里统一放开 conf 可读可穿越、config 可读写。
+chmod -R a+rX "$DEST/conf" 2>/dev/null || true
+chmod -R a+rwX "$DEST/config" 2>/dev/null || true
+if [ -f "$DEST/config/portal.json" ]; then
+  chmod 666 "$DEST/config/portal.json" 2>/dev/null || true
+fi
+
+exit 0

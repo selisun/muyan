@@ -1,0 +1,33 @@
+# 牧颜（muyan）· fnOS docker-project 托管编排文件
+# 容器的启动/停止/自愈由飞牛 fnOS 应用中心管理（config/resource 声明 docker-project），无需手动 compose。
+# TRIM_* 变量由 fnOS 注入：
+#   TRIM_SERVICE_PORT = manifest.service_port（登录页美化反代对外端口 11766）
+#   TRIM_APPDEST      = 安装目标目录（/app/target 挂载点，统一网关 Socket 落点）
+#   TRIM_PKGVAR       = 运行时数据目录（var/proxy 模板、证书、账号配置、背景图）
+
+services:
+  muyan:
+    image: docker.io/openresty/openresty:alpine
+    container_name: muyan
+    restart: unless-stopped
+    ports:
+      # fnOS 登录页美化反代（容器 443 映射宿主 wizard_port，默认 11766）
+      # wizard_port 由安装向导收集；若 fnOS 未注入则 fallback 到 11766
+      - "${wizard_port:-11766}:443"
+    extra_hosts:
+      # 反代目标 fnOS Web(http 5666) 在宿主机上
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # 主反代配置：80→443 + 443 登录页反代（sub_filter 注入）
+      - "${TRIM_PKGVAR}/proxy/conf/default.conf:/etc/nginx/conf.d/default.conf:ro"
+      # 窗口 unix socket server 配置 + Lua 脚本（default.conf 里 include /etc/nginx/lhg/）
+      - "${TRIM_PKGVAR}/proxy/conf:/etc/nginx/lhg:ro"
+      # 应用自签证书（install_callback 用宿主机 openssl 生成，CN=muyan；不触碰系统证书）
+      - "${TRIM_PKGVAR}/proxy/certs:/certs:ro"
+      # 模板配置（rw：窗口内可改写 json）
+      - "${TRIM_PKGVAR}/proxy/config:/config:rw"
+      # rw：上传接口(PUT)由 Lua 直接覆盖背景图
+      - "${TRIM_PKGVAR}/proxy/bg:/usr/share/nginx/html/bg:rw"
+      # 统一网关 Socket：容器内 /app/target/app.sock ↔ 宿主 ${TRIM_APPDEST}/app.sock
+      # 网关把 /app/muyan/* 请求转发到该 Socket（同一 TRIM_APPDEST 插值，两侧路径天然一致）
+      - "${TRIM_APPDEST}:/app/target:rw"

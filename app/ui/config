@@ -1,0 +1,14 @@
+{
+    ".url": {
+        "muyan.Application": {
+            "title": "牧颜",
+            "icon": "images/icon_{0}.png",
+            "type": "iframe",
+            "protocol": "",
+            "gatewayPrefix": "/app/muyan",
+            "gatewaySocket": "app.sock",
+            "url": "/app/muyan/",
+            "allUsers": false
+        }
+    }
+}

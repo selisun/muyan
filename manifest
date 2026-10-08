@@ -1,0 +1,23 @@
+appname               = muyan
+version               = 0.8.10
+display_name          = 牧颜
+desc                  = 牧颜 是一款专为飞牛 NAS 打造的登录界面美化工具。无需修改系统文件，通过简单的设置，即可为你的飞牛登录页更换自定义背景图片，告别单调的默认界面，让你的 NAS 从"登录"那一刻起就与众不同。功能特点：自定义登录页背景图片；轻量无侵入，不影响系统原有功能；简单易用，设置即生效
+platform              = all
+source                = thirdparty
+maintainer            = 蓝胖纸
+maintainer_url        =
+distributor           = 蓝胖纸
+
+desktop_uidir         = ui
+desktop_applaunchname = muyan.Application
+
+# 统一网关 /app/muyan 需要 fnOS 1.1.3100+
+os_min_version        = 1.1.3100
+
+# 登录页美化反代端口（容器 443 -> 宿主 wizard_port，默认 11766）
+# 实际端口由 wizard/install 收集，docker-compose 用 ${wizard_port:-11766} 生效
+service_port          = 11766
+
+# 服务运行在 Docker 容器内，由 fnOS docker-project 托管启停
+ctl_stop              = true
+checkport             = false

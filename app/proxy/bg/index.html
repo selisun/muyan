@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>牧颜 · 飞牛登录页美化</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background: radial-gradient(1200px 800px at 20% 10%, #004040 0%, #003838 55%, #002222 100%);
+    color:#e8eef7; font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+    padding:24px 16px;
+  }
+  .topbar {
+    width:min(720px,100%); display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:18px;
+  }
+  .topbar .brand { font-size:16px; font-weight:bold; color:#cfe8e8; }
+  .topbar a { color:#8fb8b8; font-size:13px; text-decoration:none; }
+  .topbar a:hover { color:#e0f0f0; }
+
+  .card {
+    width:min(720px,100%);
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
+    border-radius:16px; padding:32px 36px; backdrop-filter:blur(8px);
+  }
+  h1 { font-size:24px; margin-bottom:8px; }
+  .sub { color:#9fb0c8; font-size:13px; margin-bottom:24px; line-height:1.7; }
+  .field { margin-bottom:16px; }
+  label { display:block; font-size:13px; color:#9fb0c8; margin-bottom:6px; }
+  input {
+    width:100%; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18);
+    border-radius:10px; padding:12px 14px; color:#e8eef7; font-size:15px; outline:none; transition:.15s;
+  }
+  input:focus { border-color:#00b3b3; background:rgba(255,255,255,.1); }
+  .err { color:#ff8f8f; font-size:13px; min-height:20px; margin-bottom:10px; }
+  button {
+    border:0; border-radius:10px; padding:12px 22px; font-size:15px; cursor:pointer;
+    background:#008080; color:#fff; transition:.15s;
+  }
+  button:hover { background:#006b6b; }
+  button:disabled { background:#335454; cursor:not-allowed; }
+
+  .sec-title { font-size:15px; color:#cfe8e8; margin:26px 0 14px; }
+  .sec-title:first-child { margin-top:4px; }
+
+  .drop {
+    border:2px dashed rgba(255,255,255,.35); border-radius:12px;
+    padding:30px 20px; text-align:center; cursor:pointer; transition:.15s; background:rgba(255,255,255,.03);
+  }
+  .drop:hover, .drop.over { border-color:#00b3b3; background:rgba(0,179,179,.1); }
+  .drop .big { font-size:36px; color:#7c8db0; }
+  .drop p { margin-top:8px; color:#c6d3e8; font-size:14px; }
+  .drop small { color:#7c8db0; font-size:12px; }
+  .preview { display:none; margin-top:16px; }
+  .preview img { width:100%; max-height:240px; object-fit:contain; border-radius:10px; background:#000; }
+  .bar { display:none; margin-top:14px; height:8px; border-radius:4px; background:rgba(255,255,255,.1); overflow:hidden; }
+  .bar i { display:block; height:100%; width:0; background:linear-gradient(90deg,#00b3b3,#6ee7a8); transition:width .2s; }
+  .actions { display:none; margin-top:18px; gap:10px; }
+  .btn-cancel { background:transparent; border:1px solid rgba(255,255,255,.3); color:#c6d3e8; }
+  .msg { font-size:13px; min-height:20px; }
+  .msg.ok { color:#6ee7a8; }
+  .msg.err { color:#ff8f8f; }
+
+  .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+  .row .field { flex:1; min-width:200px; }
+  .hint { margin-top:22px; color:#7c8db0; font-size:12px; text-align:center; line-height:1.7; }
+  .tpls { display:flex; gap:10px; flex-wrap:wrap; }
+  .tpl {
+    flex:1; min-width:140px; cursor:pointer;
+    background:rgba(255,255,255,.06); border:2px solid rgba(255,255,255,.18);
+    border-radius:12px; padding:14px 12px; text-align:center;
+    transition:.15s; user-select:none;
+  }
+  .tpl:hover { border-color:rgba(255,255,255,.35); background:rgba(255,255,255,.09); }
+  .tpl.on { border-color:#00b3b3; background:rgba(0,179,179,.14); }
+  .tpl-name { font-weight:bold; font-size:15px; color:#e0f0f0; }
+  .tpl-desc { font-size:12px; color:#8fb8b8; margin-top:6px; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">牧颜 · 飞牛登录页美化</span>
+  <span></span>
+</div>
+
+<!-- 主内容卡片 -->
+<div class="card" id="main">
+  <h1>登录页美化</h1>
+  <p class="sub">选择一张图片上传，自动缩放为 <b>1920×1080</b> 并转成 WebP 覆盖登录背景（极简模板使用专属纯色背景）。<br>上传成功后，打开登录页按 <b>Ctrl+F5</b> 强刷查看新背景。</p>
+
+  <div class="sec-title">上传背景图</div>
+  <div class="drop" id="drop">
+    <div class="big">&#10514;</div>
+    <p>点击选择，或拖拽图片到这里</p>
+    <small>支持 jpg / png / webp，建议横版大图</small>
+  </div>
+  <div class="preview" id="pv"><img id="img" alt="预览"></div>
+  <div class="bar" id="bar"><i id="fill"></i></div>
+  <div class="actions" id="act">
+    <button id="btnUp">上传并应用</button>
+    <button class="btn-cancel" id="btnCancel">重新选择</button>
+  </div>
+  <div class="msg" id="upMsg"></div>
+
+  <div class="sec-title">美化模板</div>
+  <div class="tpls" id="tpls">
+    <div class="tpl" data-t="classic">
+      <div class="tpl-name">经典</div>
+      <div class="tpl-desc">背景图 + 左侧一言 + 登录框靠右</div>
+    </div>
+    <div class="tpl" data-t="focus">
+      <div class="tpl-name">聚焦</div>
+      <div class="tpl-desc">背景图 + 登录框居中，界面更干净</div>
+    </div>
+    <div class="tpl" data-t="minimal">
+      <div class="tpl-name">极简</div>
+      <div class="tpl-desc">纯色深青背景 + 登录框居中</div>
+    </div>
+    <div class="tpl" data-t="cow">
+      <div class="tpl-name">牛牛</div>
+      <div class="tpl-desc">背景图 + 3 头牛盯着你看，输密码时会害羞回避</div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:16px">
+    <button id="btnSave">保存模板</button>
+    <div class="msg" id="sMsg"></div>
+  </div>
+</div>
+
+<input type="file" id="file" accept="image/*" hidden>
+
+<script>
+(function () {
+  var mainEl = document.getElementById('main');
+
+  // ---------------- 直接显示主区并加载当前模板 ----------------
+  // 统一网关已校验 fnOS 登录态，无需应用内再登录
+  mainEl.style.display = 'block';
+  var x0 = new XMLHttpRequest();
+  x0.open('GET', '/app/muyan/api/settings', true);
+  x0.onload = function () {
+    try { var r = JSON.parse(x0.responseText); } catch (e) {}
+    if (x0.status === 200 && r && r.ok && r.template) { curTpl = r.template; paintTpl(); }
+  };
+  x0.send();
+
+  // ---------------- 背景图上传 ----------------
+  var drop = document.getElementById('drop');
+  var file = document.getElementById('file');
+  var img = document.getElementById('img');
+  var pv = document.getElementById('pv');
+  var act = document.getElementById('act');
+  var btnUp = document.getElementById('btnUp');
+  var btnCancel = document.getElementById('btnCancel');
+  var bar = document.getElementById('bar');
+  var fill = document.getElementById('fill');
+  var upMsg = document.getElementById('upMsg');
+
+  function showMsg(el, t, ok) { el.textContent = t; el.className = 'msg ' + (ok ? 'ok' : 'err'); }
+
+  function read(f) {
+    if (!f) return;
+    if (f.size > 25 * 1024 * 1024) { showMsg(upMsg, '文件超过 25MB，请换一张小图。', false); return; }
+    var fr = new FileReader();
+    fr.onload = function () {
+      var im = new Image();
+      im.onload = function () {
+        var W = 1920, H = 1080;
+        var scale = Math.max(W / im.width, H / im.height);
+        var sw = W / scale, sh = H / scale;
+        var sx = (im.width - sw) / 2, sy = (im.height - sh) / 2;
+        var cv = document.createElement('canvas');
+        cv.width = W; cv.height = H;
+        var ctx = cv.getContext('2d');
+        ctx.drawImage(im, sx, sy, sw, sh, 0, 0, W, H);
+        cv.toBlob(function (b) {
+          blob = b;
+          img.src = URL.createObjectURL(b);
+          pv.style.display = 'block';
+          act.style.display = 'flex';
+          showMsg(upMsg, '已转换：' + Math.round(b.size / 1024) + ' KB · 1920×1080 WebP', true);
+        }, 'image/webp', 0.9);
+      };
+      im.onerror = function () { showMsg(upMsg, '无法解析这张图片。', false); };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(f);
+  }
+  var blob = null;
+  drop.onclick = function () { file.click(); };
+  ['dragover', 'dragenter'].forEach(function (e) { drop.addEventListener(e, function () { drop.classList.add('over'); }); });
+  ['dragleave', 'drop'].forEach(function (e) { drop.addEventListener(e, function () { drop.classList.remove('over'); }); });
+  drop.ondrop = function (e) { e.preventDefault(); read(e.dataTransfer.files[0]); };
+  file.onchange = function () { read(file.files[0]); };
+
+  btnCancel.onclick = function () {
+    pv.style.display = 'none'; act.style.display = 'none'; upMsg.textContent = ''; blob = null; file.value = '';
+  };
+
+  btnUp.onclick = function () {
+    if (!blob) return;
+    btnUp.disabled = true;
+    bar.style.display = 'block'; fill.style.width = '0';
+    showMsg(upMsg, '上传中…', true);
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', '/app/muyan/custom_bg.webp', true);
+    xhr.upload.onprogress = function (ev) {
+      if (ev.lengthComputable) fill.style.width = Math.round(ev.loaded / ev.total * 100) + '%';
+    };
+    xhr.onload = function () {
+      if (xhr.status === 200 || xhr.status === 201 || xhr.status === 204) {
+        fill.style.width = '100%';
+        showMsg(upMsg, '上传成功！请打开登录页 Ctrl+F5 强刷查看新背景。', true);
+      } else if (xhr.status === 403) {
+        showMsg(upMsg, '仅管理员可上传背景图。', false);
+      } else {
+        showMsg(upMsg, '上传失败（HTTP ' + xhr.status + '）。若返回 500，请检查容器 bg 目录写权限。', false);
+      }
+      btnUp.disabled = false;
+    };
+    xhr.onerror = function () { showMsg(upMsg, '网络错误，上传失败。', false); btnUp.disabled = false; };
+    xhr.send(blob);
+  };
+
+  // ---------------- 模板选择与保存 ----------------
+  var tplsEl = document.getElementById('tpls');
+  var btnSave = document.getElementById('btnSave');
+  var sMsg = document.getElementById('sMsg');
+  var curTpl = 'classic';
+
+  function paintTpl() {
+    var items = tplsEl.querySelectorAll('.tpl');
+    for (var i = 0; i < items.length; i++) {
+      items[i].className = 'tpl' + (items[i].getAttribute('data-t') === curTpl ? ' on' : '');
+    }
+  }
+  tplsEl.onclick = function (ev) {
+    var t = ev.target;
+    while (t && t !== tplsEl && !t.getAttribute('data-t')) t = t.parentElement;
+    if (t && t.getAttribute('data-t')) { curTpl = t.getAttribute('data-t'); paintTpl(); showMsg(sMsg, '', true); }
+  };
+
+  btnSave.onclick = function () {
+    btnSave.disabled = true;
+    var x = new XMLHttpRequest();
+    x.open('POST', '/app/muyan/api/settings', true);
+    x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    x.onload = function () {
+      btnSave.disabled = false;
+      try { var r = JSON.parse(x.responseText); } catch (e) {}
+      if (r && r.ok) {
+        showMsg(sMsg, '保存成功！打开登录页 Ctrl+F5 强刷查看新模板。', true);
+      } else if (x.status === 403) {
+        showMsg(sMsg, '仅管理员可修改模板。', false);
+      } else {
+        showMsg(sMsg, (r && r.msg) || '保存失败（HTTP ' + x.status + '）', false);
+      }
+    };
+    x.onerror = function () { btnSave.disabled = false; showMsg(sMsg, '网络错误，保存失败', false); };
+    x.send('template=' + encodeURIComponent(curTpl));
+  };
+})();
+</script>
+</body>
+</html>

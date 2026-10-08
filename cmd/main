@@ -1,0 +1,24 @@
+#!/bin/bash
+# 服务启停管理：容器由 fnOS docker-project 托管（config/resource 声明）。
+# 依据官方文档（docs/developer.fnnas.com/docker.md）：
+#   start/stop 由系统接管，这里直接放行；status 必须准确返回容器 muyan 运行状态。
+
+case "$1" in
+start)
+    exit 0
+    ;;
+stop)
+    exit 0
+    ;;
+status)
+    running=$(docker inspect -f '{{.State.Running}}' muyan 2>/dev/null)
+    if [ "$running" = "true" ]; then
+        exit 0
+    else
+        exit 3
+    fi
+    ;;
+*)
+    exit 1
+    ;;
+esac

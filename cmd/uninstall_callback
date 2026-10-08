@@ -1,0 +1,9 @@
+#!/bin/bash
+# 卸载后：停止删除容器；默认保留数据（背景图 / 模板配置），重新安装后自动恢复。
+# fnOS 登录页为零侵入反代，容器一停即自动恢复原样，无残留。
+# 需要彻底清理时，SSH 执行：sudo rm -rf /var/apps/muyan/var/proxy
+
+docker stop muyan >/dev/null 2>&1
+docker rm muyan >/dev/null 2>&1
+
+exit 0

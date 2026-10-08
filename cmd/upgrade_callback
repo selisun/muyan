@@ -1,0 +1,41 @@
+#!/bin/bash
+# 升级后：同步模板文件到 var/proxy（覆盖式，不删除目录 inode，避免容器 bind mount 悬空）。
+# 保留用户配置与背景图。容器由 fnOS docker-project 托管，配置改动经容器重启生效。
+set -e
+
+SRC="$TRIM_APPDEST/proxy"
+DEST="$TRIM_PKGVAR/proxy"
+LOGFILE="${TRIM_TEMP_LOGFILE:-/dev/null}"
+
+err() { echo "$1" > "$LOGFILE"; exit 1; }
+
+mkdir -p "$DEST/conf"
+cp -rf "$SRC/conf/." "$DEST/conf/" || err "同步配置模板失败"
+mkdir -p "$DEST/bg"
+cp -f "$SRC/bg/index.html" "$SRC/bg/quote.txt" "$SRC/bg/solid_bg.webp" "$SRC/bg/cow.js" "$SRC/bg/cow_bg.svg" "$DEST/bg/" || err "同步页面模板失败"
+# 不覆盖用户背景图 / config（portal.json 模板配置）
+[ -s "$DEST/bg/custom_bg.webp" ] || cp -f "$SRC/bg/custom_bg.webp" "$DEST/bg/"
+
+# ---------- 自签证书 ----------
+# 0.7.9 起改为应用自签证书（CN=muyan，不再复制系统证书）。
+# 升级时无条件重新生成，覆盖旧版证书副本（证书非用户数据，替换无副作用）。
+mkdir -p "$DEST/certs"
+if ! openssl req -x509 -newkey rsa:2048 -nodes \
+    -keyout "$DEST/certs/key.pem" -out "$DEST/certs/cert.pem" \
+    -days 3650 -subj "/CN=muyan" -addext "subjectAltName=DNS:muyan" \
+    >/dev/null 2>&1; then
+  # 生成失败静默保留旧证书，不阻断升级
+  true
+else
+  chmod 644 "$DEST/certs/cert.pem" "$DEST/certs/key.pem" 2>/dev/null || true
+fi
+
+# ---------- 权限修正：容器内 nginx worker 非 root ----------
+# fnOS 重新解包的 conf/config 为 700，worker 读不到 Lua 文件与 portal.json → API 503。
+chmod -R a+rX "$DEST/conf" 2>/dev/null || true
+chmod -R a+rwX "$DEST/config" 2>/dev/null || true
+if [ -f "$DEST/config/portal.json" ]; then
+  chmod 666 "$DEST/config/portal.json" 2>/dev/null || true
+fi
+
+exit 0

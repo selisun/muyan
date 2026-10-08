@@ -1,0 +1,14 @@
+#!/bin/bash
+# 安装前检查：Docker 环境可用
+
+if ! command -v docker >/dev/null 2>&1; then
+    echo "未检测到 docker 命令，本应用依赖 Docker 运行" > "${TRIM_TEMP_LOGFILE:-/dev/null}"
+    exit 1
+fi
+
+if docker compose version >/dev/null 2>&1 || docker-compose version >/dev/null 2>&1; then
+    exit 0
+fi
+
+echo "未检测到 docker compose，本应用依赖 Docker Compose 运行" > "${TRIM_TEMP_LOGFILE:-/dev/null}"
+exit 1
