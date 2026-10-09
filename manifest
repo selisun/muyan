@@ -1,8 +1,10 @@
 appname               = muyan
-version               = 0.8.15
+version               = 0.8.16
 display_name          = 牧颜
 desc                  = 牧颜 是一款专为飞牛 NAS 打造的登录界面美化工具。无需修改系统文件，通过简单的设置，即可为你的飞牛登录页更换自定义背景图片，告别单调的默认界面，让你的 NAS 从"登录"那一刻起就与众不同。功能特点：自定义登录页背景图片；轻量无侵入，不影响系统原有功能；简单易用，设置即生效
-platform              = all
+# 暂只声明 x86（镜像 resty alpine 已支持 amd64+arm64，包内无平台相关二进制）
+# 待 arm64 真机验证通过后改回 all
+platform              = x86
 source                = thirdparty
 maintainer            = 蓝胖纸
 maintainer_url        =
