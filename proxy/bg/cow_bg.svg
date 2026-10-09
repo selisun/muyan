@@ -1,9 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#7EC8E3"/>
-      <stop offset="0.55" stop-color="#BDE3F0"/>
-      <stop offset="1" stop-color="#EAF6F4"/>
+      <stop offset="0" stop-color="#3E9BDE"/>
+      <stop offset="0.45" stop-color="#7FC5EB"/>
+      <stop offset="0.78" stop-color="#C3E7F4"/>
+      <stop offset="1" stop-color="#EAF7F2"/>
     </linearGradient>
     <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#7CBF5A"/>
@@ -28,31 +29,43 @@
   <circle cx="1560" cy="170" r="150" fill="url(#sunGlow)"/>
   <circle cx="1560" cy="170" r="62" fill="url(#sun)"/>
 
-  <!-- 云朵 -->
-  <g fill="#FFFFFF" opacity="0.92">
-    <g transform="translate(260,140) scale(1)">
-      <ellipse cx="0" cy="0" rx="90" ry="34"/>
-      <ellipse cx="62" cy="-14" rx="66" ry="30"/>
-      <ellipse cx="-58" cy="-10" rx="56" ry="26"/>
-      <ellipse cx="18" cy="18" rx="120" ry="30"/>
+  <!-- 云朵（蓝天白云，做大做白） -->
+  <g fill="#FFFFFF" opacity="0.97">
+    <g transform="translate(300,150)">
+      <ellipse cx="0" cy="6" rx="120" ry="38"/>
+      <ellipse cx="78" cy="-20" rx="78" ry="38"/>
+      <ellipse cx="-72" cy="-14" rx="66" ry="32"/>
+      <ellipse cx="10" cy="24" rx="150" ry="34"/>
     </g>
-    <g transform="translate(760,90) scale(0.72)">
-      <ellipse cx="0" cy="0" rx="90" ry="34"/>
-      <ellipse cx="62" cy="-14" rx="66" ry="30"/>
-      <ellipse cx="-58" cy="-10" rx="56" ry="26"/>
-      <ellipse cx="18" cy="18" rx="120" ry="30"/>
+    <g transform="translate(760,86) scale(0.85)">
+      <ellipse cx="0" cy="6" rx="120" ry="38"/>
+      <ellipse cx="78" cy="-20" rx="78" ry="38"/>
+      <ellipse cx="-72" cy="-14" rx="66" ry="32"/>
+      <ellipse cx="10" cy="24" rx="150" ry="34"/>
     </g>
-    <g transform="translate(1180,240) scale(0.55)">
-      <ellipse cx="0" cy="0" rx="90" ry="34"/>
-      <ellipse cx="62" cy="-14" rx="66" ry="30"/>
-      <ellipse cx="-58" cy="-10" rx="56" ry="26"/>
-      <ellipse cx="18" cy="18" rx="120" ry="30"/>
+    <g transform="translate(1120,205) scale(0.6)">
+      <ellipse cx="0" cy="6" rx="120" ry="38"/>
+      <ellipse cx="78" cy="-20" rx="78" ry="38"/>
+      <ellipse cx="-72" cy="-14" rx="66" ry="32"/>
+      <ellipse cx="10" cy="24" rx="150" ry="34"/>
     </g>
-    <g transform="translate(1720,320) scale(0.62)">
-      <ellipse cx="0" cy="0" rx="90" ry="34"/>
-      <ellipse cx="62" cy="-14" rx="66" ry="30"/>
-      <ellipse cx="-58" cy="-10" rx="56" ry="26"/>
-      <ellipse cx="18" cy="18" rx="120" ry="30"/>
+    <g transform="translate(980,66) scale(0.5)">
+      <ellipse cx="0" cy="6" rx="120" ry="38"/>
+      <ellipse cx="78" cy="-20" rx="78" ry="38"/>
+      <ellipse cx="-72" cy="-14" rx="66" ry="32"/>
+      <ellipse cx="10" cy="24" rx="150" ry="34"/>
+    </g>
+    <g transform="translate(470,300) scale(0.46)">
+      <ellipse cx="0" cy="6" rx="120" ry="38"/>
+      <ellipse cx="78" cy="-20" rx="78" ry="38"/>
+      <ellipse cx="-72" cy="-14" rx="66" ry="32"/>
+      <ellipse cx="10" cy="24" rx="150" ry="34"/>
+    </g>
+    <g transform="translate(1450,330) scale(0.52)">
+      <ellipse cx="0" cy="6" rx="120" ry="38"/>
+      <ellipse cx="78" cy="-20" rx="78" ry="38"/>
+      <ellipse cx="-72" cy="-14" rx="66" ry="32"/>
+      <ellipse cx="10" cy="24" rx="150" ry="34"/>
     </g>
   </g>
 
@@ -127,6 +140,71 @@
   <g stroke="#7C4F28" stroke-width="4" stroke-linecap="round" opacity="0.5">
     <path d="M0 918 L1920 918"/>
     <path d="M0 976 L1920 976"/>
+  </g>
+
+  <!-- 牧场大门：门内向远处收窄的土路 -->
+  <path d="M936 900 L1176 900 L1110 700 Q1056 676 1002 700 Z" fill="#C9A66B" opacity="0.75"/>
+  <path d="M936 900 L1176 900 L1110 700 Q1056 676 1002 700 Z" fill="none" stroke="#A8814C" stroke-width="3" opacity="0.5"/>
+
+  <!-- 牧场大门：双开木门（关闭态） -->
+  <g>
+    <!-- 左门扇 -->
+    <rect x="920" y="694" width="132" height="216" rx="4" fill="#B07A40" stroke="#6E441F" stroke-width="4"/>
+    <g stroke="#7C4F28" stroke-width="3">
+      <path d="M952 694 L952 910"/>
+      <path d="M986 694 L986 910"/>
+      <path d="M1020 694 L1020 910"/>
+      <path d="M920 760 L1052 760"/>
+      <path d="M920 856 L1052 856"/>
+      <path d="M920 910 L1052 694"/>
+    </g>
+    <!-- 右门扇 -->
+    <rect x="1060" y="694" width="132" height="216" rx="4" fill="#B07A40" stroke="#6E441F" stroke-width="4"/>
+    <g stroke="#7C4F28" stroke-width="3">
+      <path d="M1092 694 L1092 910"/>
+      <path d="M1126 694 L1126 910"/>
+      <path d="M1160 694 L1160 910"/>
+      <path d="M1060 760 L1192 760"/>
+      <path d="M1060 856 L1192 856"/>
+      <path d="M1060 694 L1192 910"/>
+    </g>
+    <!-- 中缝门把手 -->
+    <circle cx="1046" cy="810" r="6" fill="#F2D98A" stroke="#6E441F" stroke-width="2"/>
+    <circle cx="1066" cy="810" r="6" fill="#F2D98A" stroke="#6E441F" stroke-width="2"/>
+  </g>
+
+  <!-- 牧场大门：门柱 -->
+  <g>
+    <rect x="866" y="560" width="50" height="386" rx="10" fill="#8A5A2B" stroke="#5E3A17" stroke-width="4"/>
+    <rect x="1196" y="560" width="50" height="386" rx="10" fill="#8A5A2B" stroke="#5E3A17" stroke-width="4"/>
+    <!-- 木纹 -->
+    <g stroke="#72491F" stroke-width="2" opacity="0.6">
+      <path d="M878 580 L878 930"/>
+      <path d="M904 580 L904 930"/>
+      <path d="M1208 580 L1208 930"/>
+      <path d="M1234 580 L1234 930"/>
+    </g>
+    <!-- 柱顶三角帽 -->
+    <path d="M852 562 L930 562 L891 512 Z" fill="#A06A35" stroke="#5E3A17" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M1182 562 L1260 562 L1221 512 Z" fill="#A06A35" stroke="#5E3A17" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+
+  <!-- 牧场大门：招牌 -->
+  <g>
+    <!-- 挂链 -->
+    <g stroke="#4A3418" stroke-width="6" fill="none">
+      <path d="M891 512 L891 482"/>
+      <path d="M1221 512 L1221 482"/>
+    </g>
+    <rect x="794" y="364" width="512" height="118" rx="18" fill="#9C6B38" stroke="#5E3A17" stroke-width="6"/>
+    <!-- 招牌木板纹 -->
+    <g stroke="#7E5226" stroke-width="2" opacity="0.55">
+      <path d="M812 404 L1288 404"/>
+      <path d="M812 442 L1288 442"/>
+    </g>
+    <text x="1050" y="448" text-anchor="middle"
+          font-family="SimHei,'Microsoft YaHei',sans-serif" font-size="60" font-weight="bold"
+          fill="#FFF6E0" stroke="#4A2F12" stroke-width="1.6" paint-order="stroke">牛牛牧场欢迎你</text>
   </g>
 
   <!-- 前端草地深色暗角（衬托登录框） -->

@@ -55,6 +55,31 @@ if [ ! -s "$DEST/config/portal.json" ]; then
   chmod 666 "$DEST/config/portal.json"
 fi
 
+# ---------- 探测 fnOS Web 实际端口（写死 5666 会 502：用户可自定义端口） ----------
+# 原理：fnOS 登录页监听在 0.0.0.0，curl 任意监听端口返回含 "fnOS" 特征的 HTML。
+# 注意排除自身反代端口（重装时容器可能已在跑，反代页同样带 fnOS 特征，会探测到自己死循环）。
+detect_fnos_port() {
+  local p body
+  # fast path：默认端口 5666
+  body=$(curl -s -m 2 http://127.0.0.1:5666/ 2>/dev/null) || body=""
+  if printf '%s' "$body" | grep -q "fnOS"; then
+    echo "5666"; return 0
+  fi
+  # 扫描全部监听端口（排除自身反代端口）
+  for p in $(ss -tln 2>/dev/null | awk 'NR>1 {n=split($4,a,":"); print a[n]}' | sort -un); do
+    [ "$p" = "$PORT" ] && continue
+    [ "$p" -lt 1024 ] 2>/dev/null && continue
+    body=$(curl -s -m 2 "http://127.0.0.1:$p/" 2>/dev/null) || body=""
+    if printf '%s' "$body" | grep -q "fnOS"; then
+      echo "$p"; return 0
+    fi
+  done
+  return 1
+}
+FNOS_PORT=$(detect_fnos_port) || FNOS_PORT="5666"
+printf 'FNOS_PORT=%s\n' "$FNOS_PORT" > "$DEST/config/upstream.conf"
+chmod 666 "$DEST/config/upstream.conf" 2>/dev/null || true
+
 # ---------- bg 目录容器内可写（上传接口 PUT 覆盖背景图需要） ----------
 chmod -R a+rwX "$DEST/bg" 2>/dev/null || true
 

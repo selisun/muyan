@@ -1,0 +1,23 @@
+[
+  {
+    "stepTitle": "卸载选项",
+    "items": [
+      {
+        "type": "radio",
+        "field": "wizard_purge_data",
+        "label": "背景图与设置数据",
+        "initValue": "keep",
+        "options": [
+          {
+            "label": "保留（重新安装后自动恢复）",
+            "value": "keep"
+          },
+          {
+            "label": "彻底删除（不可恢复）",
+            "value": "purge"
+          }
+        ]
+      }
+    ]
+  }
+]
